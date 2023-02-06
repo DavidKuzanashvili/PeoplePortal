@@ -1,0 +1,6 @@
+{
+  "invalid.max.length50": "Invalid length: Maximum allowed length is 50.",
+  "invalid.min.length2": "Invalid length: Minimum allowed length is 2.",
+  "invalid.alphabet.onlylatin": "Invalid alphabet: Use only latin charachters when selecting en-US culture.",
+  "invalid.alphabet.onlyGeo": "Invalid alphabet: Use only Georgian charachters when selecting ka-GE culture."
+}
