@@ -13,7 +13,7 @@ public interface IPeopleService
         CreatePersonDto model, 
         CancellationToken cancellationToken);
 
-    Task RelatedPeopleReportAsync(
+    Task<(byte[], string, string)> GetRelatedPeopleReportStreamAsync(
        CancellationToken cancellationToken);
 
     Task UpdatePersonAsync(

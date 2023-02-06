@@ -21,4 +21,6 @@ public interface IPeopleRepository : IRepository<Person, Guid>
     Task<List<Person>> GetByIdsReadonlyAsync(
         IEnumerable<Guid> ids, 
         CancellationToken cancellationToken);
+
+    Task<List<Person>> GetWithRelatedPeopleReadOnlyAsyn(CancellationToken cancellationToken);
 }

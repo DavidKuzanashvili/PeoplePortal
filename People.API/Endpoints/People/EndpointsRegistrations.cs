@@ -42,5 +42,9 @@ internal static partial class EndpointsRegistrations
         root.MapPut("assign-person", AssingRelatedPeopleEndpoint.ExecuteAsync)
             .WithName("AssignPerson")
             .Produces<List<AssignedPersonItem>>(StatusCodes.Status200OK);
+
+        root.MapGet("related-people-report/download", DownloadRelatedPeopleReportEndpoint.ExecuteAsync)
+            .WithName("DownloadReportFile")
+            .Produces<byte[]>(StatusCodes.Status200OK);
     }
 }

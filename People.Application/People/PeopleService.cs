@@ -1,9 +1,11 @@
 ﻿using People.Application.Cities.Repositories;
 using People.Application.Common;
 using People.Application.Files;
+using People.Application.Files.Models;
 using People.Application.People.Dtos;
 using People.Application.People.Repositories;
 using People.Domain.Entities;
+using People.Domain.Enums;
 
 namespace People.Application.People;
 
@@ -140,9 +142,28 @@ public class PeopleService : IPeopleService
             totalCount);
     }
 
-    public Task RelatedPeopleReportAsync(CancellationToken cancellationToken)
+    public async Task<(byte[], string, string)> GetRelatedPeopleReportStreamAsync(
+        CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var persons = await _peopleRepository.GetWithRelatedPeopleReadOnlyAsyn(cancellationToken);
+        var records = persons
+            .Select(x => new RelatedPeopleReportRecord()
+            {
+                Id = x.EntityId,
+                Name = x.Name,
+                PersonalNumber = x.PersonalNumber,
+                Colleagues = x.RelatedPeople
+                    .Count(c => c.RelationType == RelatedPersonType.Colleague),
+                Relatives = x.RelatedPeople
+                    .Count(c => c.RelationType == RelatedPersonType.Relative),
+                Friends = x.RelatedPeople
+                    .Count(c => c.RelationType == RelatedPersonType.Friend),
+                Others = x.RelatedPeople
+                    .Count(c => c.RelationType == RelatedPersonType.Other),
+            })
+            .ToList();
+        var byteArr = _csvFileBuilder.BuildRelatedPeopleReportFile(records);
+        return (byteArr, "csv", $"relation-report-{DateTime.UtcNow:dd-MM-YYYY}");
     }
 
     public async Task UpdatePersonAsync(

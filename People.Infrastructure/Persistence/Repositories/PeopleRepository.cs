@@ -60,6 +60,14 @@ public class PeopleRepository :
         return (result, totalCount);
     }
 
+    public Task<List<Person>> GetWithRelatedPeopleReadOnlyAsyn(CancellationToken cancellationToken)
+    {
+        return _readonlySet
+            .Include(x => x.RelatedPeople)
+            .ToListAsync(cancellationToken);
+
+    }
+
     public async Task SetImagePathAsync(
         Guid id,
         string path, 
