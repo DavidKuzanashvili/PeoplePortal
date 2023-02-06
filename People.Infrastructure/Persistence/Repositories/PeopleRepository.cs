@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using People.Application.Common;
+using People.Application.People.Dtos;
 using People.Application.People.Repositories;
 using People.Domain.Entities;
 using People.Infrastructure.Persistence.Context;
@@ -46,13 +47,16 @@ public class PeopleRepository :
     public async Task<(List<Person>, int)> GetFilteredReadonlyAsync(
         SortingOrder sort, 
         int skip, 
-        int take, 
+        int take,
+        GetPeopleQueryDto filter,
         CancellationToken cancellationToken)
     {
-        var result = await _readonlySet
+        var query = _readonlySet
             .Include(x => x.City)
             .Include(x => x.PhoneNumbers)
-            .Include(x => x.RelatedPeople)
+            .Include(x => x.RelatedPeople);
+        FilterReadOnly(query, filter);
+        var result = await  query
             .Skip(skip)
             .Take(take)
             .ToListAsync(cancellationToken);
@@ -76,5 +80,33 @@ public class PeopleRepository :
         var person = await _set.FirstOrDefaultAsync(x => x.EntityId == id, cancellationToken);
         if (person == null) return;
         person.SetImagePath(path);
+    }
+
+    private void FilterReadOnly(
+        IQueryable<Person> query,
+        GetPeopleQueryDto filter)
+    {
+        if (!string.IsNullOrWhiteSpace(filter.Query))
+        {
+            query = query
+                .Where(x =>
+                    x.Name.Contains(filter.Query, StringComparison.InvariantCultureIgnoreCase)
+                    || x.Surname.Contains(filter.Query, StringComparison.InvariantCultureIgnoreCase)
+                    || x.PersonalNumber.Contains(filter.Query, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        if (!string.IsNullOrWhiteSpace(filter.Name))
+        {
+            query = query
+                .Where(x => x.Name
+                    .Contains(filter.Name, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        if (!string.IsNullOrWhiteSpace(filter.Surname))
+        {
+            query = query
+                .Where(x => x.Surname
+                    .Contains(filter.Surname, StringComparison.InvariantCultureIgnoreCase));
+        }
     }
 }

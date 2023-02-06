@@ -121,7 +121,8 @@ public class PeopleService : IPeopleService
     public async Task<GetPeopleDto> GetFilteredReadonlyAsync(
         string? sort, 
         int? skip, 
-        int? take, 
+        int? take,
+        GetPeopleQueryDto query,
         CancellationToken cancellationToken)
     {
 
@@ -129,6 +130,7 @@ public class PeopleService : IPeopleService
             sort is null ? _defaultSortingOrder : sort.GetSorting(),
             skip ?? _defaultSkip,
             take ?? _defaultTake,
+            query,
             cancellationToken);
 
         return new GetPeopleDto(

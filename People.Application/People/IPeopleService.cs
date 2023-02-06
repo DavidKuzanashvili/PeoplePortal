@@ -6,7 +6,7 @@ namespace People.Application.People;
 public interface IPeopleService
 {
     Task AssingRelatedPeopleAsync(
-        AssignPeopleDto model, 
+        AssignPeopleDto model,
         CancellationToken cancellationToken);
    
     Task<Guid> CreatePersonAsync(
@@ -32,6 +32,7 @@ public interface IPeopleService
         string? sort,
         int? skip,
         int? take,
+        GetPeopleQueryDto query,
         CancellationToken cancellationToken);
 
     Task<string> UploadImageAsync(

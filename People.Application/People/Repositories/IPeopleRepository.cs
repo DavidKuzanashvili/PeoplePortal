@@ -16,6 +16,7 @@ public interface IPeopleRepository : IRepository<Person, Guid>
         SortingOrder sort,
         int skip,
         int take,
+        GetPeopleQueryDto query,
         CancellationToken cancellationToken);
 
     Task<List<Person>> GetByIdsReadonlyAsync(

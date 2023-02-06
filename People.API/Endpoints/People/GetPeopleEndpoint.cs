@@ -1,5 +1,4 @@
 ﻿using People.API.Endpoints.People.Contracts;
-using People.Application.Common;
 using People.Application.People;
 using People.Application.People.Dtos;
 
@@ -11,6 +10,7 @@ internal sealed class GetPeopleEndpoint
         string? sort,
         int? skip,
         int? take,
+        [AsParameters] GetPeopleQuery query,
         IPeopleService peopleService,
         CancellationToken cancellationToken)
     {
@@ -18,6 +18,7 @@ internal sealed class GetPeopleEndpoint
             sort,
             skip,
             take,
+            Transform(query),
             cancellationToken);
 
         return Results.Ok(Transform(result));
@@ -34,5 +35,18 @@ internal sealed class GetPeopleEndpoint
                     x.PersonalNumber))
                 .ToList(),
             dto.TotalCount);
+    }
+
+    internal static GetPeopleQueryDto Transform(GetPeopleQuery q)
+    {
+        return new GetPeopleQueryDto(
+            q.Query,
+            q.Name,
+            q.Surname,
+            q.Gender,
+            q.PersonalNumber,
+            q.CityName,
+            q.PersonalNumber,
+            q.DateOfBirth);
     }
 }
