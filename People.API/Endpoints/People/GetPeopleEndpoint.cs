@@ -46,7 +46,6 @@ internal sealed class GetPeopleEndpoint
             q.Gender,
             q.PersonalNumber,
             q.CityName,
-            q.PersonalNumber,
-            q.DateOfBirth);
+            q.PersonalNumber);
     }
 }

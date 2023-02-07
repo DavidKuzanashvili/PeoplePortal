@@ -7,5 +7,4 @@ public record GetPeopleQueryDto(
     string? Gender,
     string? PhoneNumber,
     string? CityName,
-    string? PersonalNumber,
-    DateOnly? DateOfBirth);
+    string? PersonalNumber);
