@@ -1,0 +1,299 @@
+{
+	"info": {
+		"_postman_id": "84defaba-ae49-4f33-ad01-942c99bdb2a8",
+		"name": "People API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5010276"
+	},
+	"item": [
+		{
+			"name": "Create Person",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept-Language",
+						"value": "en-US",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Davit\",\r\n  \"surname\": \"Kuzanashvili\",\r\n  \"gender\": \"Male\",\r\n  \"cityName\": \"Tbilisi\",\r\n  \"personalNumber\": \"35001118503\",\r\n  \"dateOfBirth\": \"1998-08-18\",\r\n  \"phoneNumbers\": [\r\n    {\r\n      \"type\": \"Mobile\",\r\n      \"countryCode\": \"995\",\r\n      \"phoneCode\": \"597050371\"\r\n    },\r\n     {\r\n      \"type\": \"Home\",\r\n      \"countryCode\": \"995\",\r\n      \"phoneCode\": \"597050371\"\r\n    },\r\n     {\r\n      \"type\": \"Office\",\r\n      \"countryCode\": \"995\",\r\n      \"phoneCode\": \"597050381\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7258/api/person",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"person"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Person",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept-Language",
+						"value": "en-US",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:7258/api/person/7c5aa8ea-7e71-4165-ae2e-bdea869948df",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"person",
+						"7c5aa8ea-7e71-4165-ae2e-bdea869948df"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get People",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept-Language",
+						"value": "en-US",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:7258/api/people?skip=0&take=10&sort=desc&query=&name&surname&personalNumber&phoneNumber&cityName&gender&dateOfBirth",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"people"
+					],
+					"query": [
+						{
+							"key": "skip",
+							"value": "0"
+						},
+						{
+							"key": "take",
+							"value": "10"
+						},
+						{
+							"key": "sort",
+							"value": "desc"
+						},
+						{
+							"key": "query",
+							"value": ""
+						},
+						{
+							"key": "name",
+							"value": null
+						},
+						{
+							"key": "surname",
+							"value": null
+						},
+						{
+							"key": "personalNumber",
+							"value": null
+						},
+						{
+							"key": "phoneNumber",
+							"value": null
+						},
+						{
+							"key": "cityName",
+							"value": null
+						},
+						{
+							"key": "gender",
+							"value": null
+						},
+						{
+							"key": "dateOfBirth",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload Image",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept-Language",
+						"value": "en-US",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost:7258/api/upload-image/7c5aa8ea-7e71-4165-ae2e-bdea869948df",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"upload-image",
+						"7c5aa8ea-7e71-4165-ae2e-bdea869948df"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upate Person",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept-Language",
+						"value": "en-US",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"7c5aa8ea-7e71-4165-ae2e-bdea869948df\",\r\n  \"name\": \"Davit\",\r\n  \"surname\": \"Kuzanashvili\",\r\n  \"gender\": \"Male\",\r\n  \"cityName\": \"Tbilisi\",\r\n  \"personalNumber\": \"35001118503\",\r\n  \"dateOfBirth\": \"1998-08-18\",\r\n  \"phoneNumbers\": [\r\n    {\r\n      \"type\": \"Mobile\",\r\n      \"countryCode\": \"995\",\r\n      \"phoneCode\": \"597050372\"\r\n    },\r\n     {\r\n      \"type\": \"Home\",\r\n      \"countryCode\": \"995\",\r\n      \"phoneCode\": \"597050371\"\r\n    },\r\n     {\r\n      \"type\": \"Office\",\r\n      \"countryCode\": \"995\",\r\n      \"phoneCode\": \"597050371\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7258/api/person",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"person"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Person",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept-Language",
+						"value": "en-US",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:7258/api/person/7c5aa8ea-7e71-4165-ae2e-bdea869948df",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"person",
+						"7c5aa8ea-7e71-4165-ae2e-bdea869948df"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Assing Persons",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept-Language",
+						"value": "en-US",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"64383b7e-cc5b-4846-9e6d-dd3ec18d3fad\",\r\n    \"People\": [\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7258/api/assign-person",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"assign-person"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download Rleation Report",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7258/api/related-people-report/download",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7258",
+					"path": [
+						"api",
+						"related-people-report",
+						"download"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

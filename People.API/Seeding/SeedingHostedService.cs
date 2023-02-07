@@ -3,11 +3,13 @@ using People.API.Seeding.Dtos;
 using People.Domain.Entities;
 using People.Infrastructure.Persistence.Context;
 using System.Text.Json;
+using System.Threading;
 
 namespace People.API.Seeding;
 
 public class SeedingHostedService : BackgroundService
 {
+    private const string TRUNCATE = "TRUNCATE";
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<SeedingHostedService> _logger;
 
@@ -33,52 +35,24 @@ public class SeedingHostedService : BackgroundService
 
             await dbContext.Database.MigrateAsync(cancellationToken);
 
-            var dropForeignKyesQuery = @"
-                ALTER TABLE [people].[TB_People] 
-                DROP CONSTRAINT [FK_TB_People_TB_Cities_City_id]
-                ALTER TABLE [people].[TB_PhoneNumbers] 
-                DROP CONSTRAINT [FK_TB_PhoneNumbers_TB_People_Person_id]
-                ALTER TABLE [people].[TB_RelatedPeople] 
-                DROP CONSTRAINT [FK_TB_RelatedPeople_TB_People_Person_id]";
+            var dbCleanupOption = Environment.GetEnvironmentVariable("DB_CLEANUP_OPTION");
 
-            var addForeignKeysQuery = @"
-                ALTER TABLE [people].[TB_People]
-                WITH CHECK ADD CONSTRAINT [FK_TB_People_TB_Cities_City_id] 
-                FOREIGN KEY([City_id])
-                REFERENCES [people].[TB_Cities] ([_id])
-                ALTER TABLE [people].[TB_People] 
-                CHECK CONSTRAINT [FK_TB_People_TB_Cities_City_id]
-                ALTER TABLE [people].[TB_PhoneNumbers] 
-                WITH CHECK ADD CONSTRAINT [FK_TB_PhoneNumbers_TB_People_Person_id] 
-                FOREIGN KEY([Person_id])
-                REFERENCES [people].[TB_People] ([_id])
-                ON DELETE CASCADE
-                ALTER TABLE [people].[TB_PhoneNumbers] 
-                CHECK CONSTRAINT [FK_TB_PhoneNumbers_TB_People_Person_id]
-                ALTER TABLE [people].[TB_RelatedPeople] 
-                WITH CHECK ADD  CONSTRAINT [FK_TB_RelatedPeople_TB_People_Person_id] 
-                FOREIGN KEY([Person_id])
-                REFERENCES [people].[TB_People] ([_id])
-                ALTER TABLE [people].[TB_RelatedPeople] 
-                CHECK CONSTRAINT [FK_TB_RelatedPeople_TB_People_Person_id]";
+            if (!string.IsNullOrWhiteSpace(dbCleanupOption) && dbCleanupOption == TRUNCATE)
+            {
+                await TruncateAndSeedAsync(dbContext, cancellationToken);
+            }
 
-            await dbContext.Database.ExecuteSqlRawAsync(
-                @$"
-                    {dropForeignKyesQuery}
-                    TRUNCATE TABLE [people].[TB_People]                    
-                    TRUNCATE TABLE [people].[TB_RelatedPeople]
-                    TRUNCATE TABLE [people].[TB_PhoneNumbers]
-                    TRUNCATE TABLE [people].[TB_Cities]
-                    {addForeignKeysQuery}");
-
-            await AddEntitiesAsync<CitySeedDto, City>(
-                "Seeding/Data/cities.json",
-                dbContext,
-                TransformCity.Transform,
-                cancellationToken);
+            var citiesCount = await dbContext.Set<City>().CountAsync();
+            if (citiesCount == 0)
+            {
+                await AddEntitiesAsync<CitySeedDto, City>(
+                    "Seeding/Data/cities.json",
+                    dbContext,
+                    TransformCity.Transform,
+                    cancellationToken);
+            }
 
             await dbContext.SaveChangesAsync(cancellationToken);
-
         }
         catch (Exception ex) 
         {
@@ -110,5 +84,48 @@ public class SeedingHostedService : BackgroundService
         };
 
         return JsonSerializer.Deserialize<T[]>(jsonString, options)?? Array.Empty<T>();
+    }
+
+    private async Task TruncateAndSeedAsync(
+        PeopleContext dbContext,
+        CancellationToken cancellationToken)
+    {
+        var dropForeignKyesQuery = @"
+                ALTER TABLE [people].[TB_People] 
+                DROP CONSTRAINT [FK_TB_People_TB_Cities_City_id]
+                ALTER TABLE [people].[TB_PhoneNumbers] 
+                DROP CONSTRAINT [FK_TB_PhoneNumbers_TB_People_Person_id]
+                ALTER TABLE [people].[TB_RelatedPeople] 
+                DROP CONSTRAINT [FK_TB_RelatedPeople_TB_People_Person_id]";
+
+        var addForeignKeysQuery = @"
+                ALTER TABLE [people].[TB_People]
+                WITH CHECK ADD CONSTRAINT [FK_TB_People_TB_Cities_City_id] 
+                FOREIGN KEY([City_id])
+                REFERENCES [people].[TB_Cities] ([_id])
+                ALTER TABLE [people].[TB_People] 
+                CHECK CONSTRAINT [FK_TB_People_TB_Cities_City_id]
+                ALTER TABLE [people].[TB_PhoneNumbers] 
+                WITH CHECK ADD CONSTRAINT [FK_TB_PhoneNumbers_TB_People_Person_id] 
+                FOREIGN KEY([Person_id])
+                REFERENCES [people].[TB_People] ([_id])
+                ON DELETE CASCADE
+                ALTER TABLE [people].[TB_PhoneNumbers] 
+                CHECK CONSTRAINT [FK_TB_PhoneNumbers_TB_People_Person_id]
+                ALTER TABLE [people].[TB_RelatedPeople] 
+                WITH CHECK ADD  CONSTRAINT [FK_TB_RelatedPeople_TB_People_Person_id] 
+                FOREIGN KEY([Person_id])
+                REFERENCES [people].[TB_People] ([_id])
+                ALTER TABLE [people].[TB_RelatedPeople] 
+                CHECK CONSTRAINT [FK_TB_RelatedPeople_TB_People_Person_id]";
+
+        await dbContext.Database.ExecuteSqlRawAsync(
+            @$"
+                    {dropForeignKyesQuery}
+                    TRUNCATE TABLE [people].[TB_People]                    
+                    TRUNCATE TABLE [people].[TB_RelatedPeople]
+                    TRUNCATE TABLE [people].[TB_PhoneNumbers]
+                    TRUNCATE TABLE [people].[TB_Cities]
+                    {addForeignKeysQuery}");
     }
 }
