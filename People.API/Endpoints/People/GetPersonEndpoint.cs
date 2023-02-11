@@ -29,6 +29,7 @@ internal sealed class GetPersonEndpoint
             dto.CityName,
             dto.PersonalNumber,
             dto.DateOfBirth,
+            dto.ImagePath,
             dto.PhoneNumbers
                 .Select(x => new PhoneNumberItem(
                     x.Type,

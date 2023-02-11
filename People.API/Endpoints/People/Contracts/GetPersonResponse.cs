@@ -8,5 +8,6 @@ public record GetPersonResponse(
     string CityName,
     string PersonalNumber,
     DateTime DateOfBirth,
+    string ImagePath,
     List<PhoneNumberItem> PhoneNumbers,
     List<AssignedPersonItem> AssingedPeople);
