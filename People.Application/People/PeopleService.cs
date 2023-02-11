@@ -195,7 +195,8 @@ public class PeopleService : IPeopleService
         CancellationToken cancellationToken)
     {
         var person = await GetByIdReadonlyAsync(model.Id, cancellationToken);
-        if (person is null) return string.Empty;
+        if (person is null)
+            throw new InvalidOperationException("Person not found");
 
         if (!person.ImagePath.Contains("default"))
             _fileStorage.Delete(person.ImagePath);
