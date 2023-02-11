@@ -12,7 +12,7 @@
 - Run command dotnet run
 2. Using Visual Studio 2022
 - Open Project in Visual Studio
-- Select desired profile to run
+- Select desired profile to run and launch application
 3. Using docker
 - Make sure docker is installed on machine
 - Open People API in Terminal/PowerShell/CMD 
@@ -26,4 +26,4 @@
 
 # Usage
 1. Use swagger to send requests
-2. import People API.postman_collection.json into postman and send requests
+2. Or import People API.postman_collection.json into postman and send requests

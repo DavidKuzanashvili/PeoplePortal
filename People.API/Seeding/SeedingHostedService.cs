@@ -3,7 +3,6 @@ using People.API.Seeding.Dtos;
 using People.Domain.Entities;
 using People.Infrastructure.Persistence.Context;
 using System.Text.Json;
-using System.Threading;
 
 namespace People.API.Seeding;
 
@@ -39,7 +38,7 @@ public class SeedingHostedService : BackgroundService
 
             if (!string.IsNullOrWhiteSpace(dbCleanupOption) && dbCleanupOption == TRUNCATE)
             {
-                await TruncateAndSeedAsync(dbContext, cancellationToken);
+                await TruncateAsync(dbContext, cancellationToken);
             }
 
             var citiesCount = await dbContext.Set<City>().CountAsync();
@@ -86,7 +85,7 @@ public class SeedingHostedService : BackgroundService
         return JsonSerializer.Deserialize<T[]>(jsonString, options)?? Array.Empty<T>();
     }
 
-    private async Task TruncateAndSeedAsync(
+    private async Task TruncateAsync(
         PeopleContext dbContext,
         CancellationToken cancellationToken)
     {
@@ -121,11 +120,12 @@ public class SeedingHostedService : BackgroundService
 
         await dbContext.Database.ExecuteSqlRawAsync(
             @$"
-                    {dropForeignKyesQuery}
-                    TRUNCATE TABLE [people].[TB_People]                    
-                    TRUNCATE TABLE [people].[TB_RelatedPeople]
-                    TRUNCATE TABLE [people].[TB_PhoneNumbers]
-                    TRUNCATE TABLE [people].[TB_Cities]
-                    {addForeignKeysQuery}");
+                {dropForeignKyesQuery}
+                TRUNCATE TABLE [people].[TB_People]                    
+                TRUNCATE TABLE [people].[TB_RelatedPeople]
+                TRUNCATE TABLE [people].[TB_PhoneNumbers]
+                TRUNCATE TABLE [people].[TB_Cities]
+                {addForeignKeysQuery}",
+            cancellationToken);
     }
 }
