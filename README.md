@@ -22,7 +22,7 @@
 # Storage
 1. Make sure sql server is running on machine
 2. Change connection string in People API appsetings.json to point your local instance
-3. DB creationg is automatic, but in every run all tables are truncateded and seeded, unless DB_CLEANUP_OPTIONS is set to no action in Properties/launchSettings.json
+3. DB creation is automatic, but in every run all tables are truncateded and seeded, unless DB_CLEANUP_OPTIONS is set to no action in Properties/launchSettings.json
 
 # Usage
 1. Use swagger to send requests
