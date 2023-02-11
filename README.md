@@ -16,7 +16,7 @@
 3. Using docker
 - Make sure docker is installed on machine
 - Open People API in Terminal/PowerShell/CMD 
-- Run command docker build -t peopleapi .
+- Run command docker build -t peopleapi -f People.API/Dockerfile .
 - Run command docker run -it --rm -p 5000:80 --name peopleapi peopleapi
 
 # Storage
