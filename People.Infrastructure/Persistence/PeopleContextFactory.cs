@@ -25,6 +25,6 @@ internal class PeopleContextFactory : IDesignTimeDbContextFactory<PeopleContext>
                     .MigrationsHistoryTable("__EFMigrationHistory", PeopleContext.DEFAULT_SCHEMA);
             });
 
-        return new PeopleContext(optionsBuilder.Options);
+        return new PeopleContext(optionsBuilder.Options, null!);
     }
 }

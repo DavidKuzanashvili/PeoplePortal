@@ -5,8 +5,10 @@ using People.Application.Cities.Repositories;
 using People.Application.Common;
 using People.Application.Files;
 using People.Application.People.Repositories;
+using People.Infrastructure.Common;
 using People.Infrastructure.Files;
 using People.Infrastructure.Persistence.Context;
+using People.Infrastructure.Persistence.Context.Interceptors;
 using People.Infrastructure.Persistence.Repositories;
 
 namespace People.Infrastructure;
@@ -19,6 +21,8 @@ public static class ConfigureServices
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.AddScoped<AuditableEntitySaveChangesInterceptor>();
+
         var dbConnectionStr = configuration.GetConnectionString(DbConnectionStringName); 
         services.AddDbContext<PeopleContext>(builder =>
         {
@@ -31,6 +35,8 @@ public static class ConfigureServices
                     .EnableRetryOnFailure();
             });
         });
+
+        services.AddTransient<IDateTime, DateTimeService>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IPeopleRepository, PeopleRepository>();

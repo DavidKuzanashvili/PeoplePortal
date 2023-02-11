@@ -19,7 +19,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DB_CONNECTION": "Server=.;Initial Catalog=Db_People;Integrated Security=true;",
-        "DB_CLEANUP_OPTION": "NOACTION"
+        "DB_CLEANUP_OPTION": "TRUNCATE"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7258;http://localhost:5026"
