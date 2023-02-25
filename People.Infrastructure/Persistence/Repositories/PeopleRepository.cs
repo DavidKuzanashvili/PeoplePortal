@@ -6,7 +6,6 @@ using People.Domain.Entities;
 using People.Infrastructure.Extensions;
 using People.Infrastructure.Persistence.Context;
 using People.Infrastructure.Persistence.Extensions;
-using System.Runtime.InteropServices;
 
 namespace People.Infrastructure.Persistence.Repositories;
 

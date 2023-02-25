@@ -25,7 +25,7 @@ public record UpdatePersonRequest(
                 GenderType.Female.ToString(),
             };
 
-            var minaAllowedDOB = DateTime.UtcNow.Date.AddYears(-18);
+            var minAllowedDOB = DateTime.UtcNow.Date.AddYears(-18);
 
             RuleFor(x => x.Name)
                 .MinimumLength(2)
@@ -56,7 +56,7 @@ public record UpdatePersonRequest(
                 .WithMessage(localizer["invalid.onlynumbers"]);
 
             RuleFor(x => x.DateOfBirth)
-                .Must(x => x.Date <= minaAllowedDOB)
+                .Must(x => x.Date <= minAllowedDOB)
                 .WithErrorCode(localizer["invalid.age"]);
 
             RuleFor(x => x.PhoneNumbers)

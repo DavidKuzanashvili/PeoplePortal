@@ -73,7 +73,6 @@ public class JsonStringLocalizer : IStringLocalizer
 
     private string GetLocalizedString(string key)
     {
-
         string relativeFilePath = $"Resources/{Thread.CurrentThread.CurrentCulture.Name}.json";
         string fullFilePath = Path.GetFullPath(relativeFilePath);
 

@@ -20,7 +20,6 @@ internal sealed class ExceptionHandlerMiddleware : IMiddleware
         catch (Exception e) 
         {
             _logger.LogError(e, "Unhandeld exception occured");
-            throw;
         }
     }
 }

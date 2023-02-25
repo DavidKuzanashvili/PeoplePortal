@@ -19,14 +19,18 @@ public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
         _dateTime = dateTime;
     }
 
-    public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
+    public override InterceptionResult<int> SavingChanges(
+        DbContextEventData eventData, 
+        InterceptionResult<int> result)
     {
         UpdateEntities(eventData.Context);
 
         return base.SavingChanges(eventData, result);
     }
 
-    public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
+    public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
+        DbContextEventData eventData, InterceptionResult<int> result, 
+        CancellationToken cancellationToken = default)
     {
         UpdateEntities(eventData.Context);
 
@@ -45,7 +49,9 @@ public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
                 entry.Entity.Created = _dateTime.Now;
             }
 
-            if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
+            if (entry.State == EntityState.Added 
+                || entry.State == EntityState.Modified 
+                || entry.HasChangedOwnedEntities())
             {
                 entry.Entity.LastModifiedBy = _currentUserService.UserId;
                 entry.Entity.LastModified = _dateTime.Now;
